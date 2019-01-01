@@ -1,0 +1,65 @@
+html, body{
+    margin: 0;
+    height: 100%;
+}
+
+input{
+    margin-left: 0;
+    border-left: 0;
+}
+
+#main{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#list_component{
+    display: flex;
+    font-size: 2vw;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 700px;
+    width: 500px;
+    background-color: hsla(0, 0%, 50%, 0.5);
+    border-radius: 20px;
+    box-shadow: 5px 5px;
+}
+
+#todo-list{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+
+#hide-button{
+    align-self: center;
+    margin-top:auto;
+    font-size: 1.5vw;
+    margin-bottom: 50px;
+    box-shadow: -2px -2px black;
+}
+
+#todo-count{
+    align-self: flex-start;
+    margin: 0 0 20px 20px;
+    color: white;
+    text-shadow: 2px 2px black;
+}
+
+.contentRow{
+    display:flex;
+    flex-direction: row;
+    text-align: left;
+}
+
+.todoItem{
+    background-color: white;
+    color: black;
+}
+

@@ -5,7 +5,7 @@ type state = {
     todoText: string
 };
 
-type todo = {
+type todo_t = {
     description: string,
     completed: bool
 };
@@ -64,12 +64,15 @@ let make = (_children) => {
                 (   List.length(state.todos) < 1 ? str("Nothing yet") :
                     ReasonReact.array(Array.of_list(
                         List.map(todo => 
-                            <TodoItem key={string_of_int(inc(iter))} description={todo} />,
+                            <TodoItem key={string_of_int(inc(iter))} description={todo} showCompleted=state.showCompleted/>,
                                  state.todos)
                     ))
                 )
                 </div>/*</todo-list>*/
-                <button id="hide-button">{str("Hide Completed Todos")}</button>
+                <button 
+                    id="hide-button"
+                    onClick=(_ => send(ToggleHidden))
+                    >{str("Hide Completed Todos")}</button>
                 <div id="todo-count">{str("Todos left: " ++ string_of_int(state.count))}</div>
             </div>/*</list-component>*/
         }

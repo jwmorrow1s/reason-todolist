@@ -14,7 +14,7 @@ function str(prim) {
   return prim;
 }
 
-function make(description, _children) {
+function make(description, showCompleted, _children) {
   return /* record */[
           /* debugName */component[/* debugName */0],
           /* reactClassInternal */component[/* reactClassInternal */1],
@@ -28,14 +28,19 @@ function make(description, _children) {
           /* render */(function (param) {
               var send = param[/* send */3];
               var state = param[/* state */1];
-              return React.createElement("div", {
-                          className: "contentRow",
-                          onClick: (function (param) {
-                              return Curry._1(send, /* Click */0);
-                            })
-                        }, ReasonReact.element(undefined, undefined, CheckBox$ReactTemplate.make("black", state[/* completed */1], /* array */[])), ReasonReact.element(undefined, undefined, HorizontalSpacer$ReactTemplate.make("50", /* array */[])), React.createElement("div", {
-                              className: "todoItem"
-                            }, state[/* description */0]));
+              var match = !showCompleted && state[/* completed */1];
+              if (match) {
+                return "";
+              } else {
+                return React.createElement("div", {
+                            className: "contentRow",
+                            onClick: (function (param) {
+                                return Curry._1(send, /* Click */0);
+                              })
+                          }, ReasonReact.element(undefined, undefined, CheckBox$ReactTemplate.make("black", state[/* completed */1], /* array */[])), ReasonReact.element(undefined, undefined, HorizontalSpacer$ReactTemplate.make("50", /* array */[])), React.createElement("div", {
+                                className: "todoItem"
+                              }, state[/* description */0]));
+              }
             }),
           /* initialState */(function (param) {
               return /* record */[

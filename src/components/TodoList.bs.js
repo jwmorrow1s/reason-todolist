@@ -58,9 +58,12 @@ function make(_children) {
                                 })), ReasonReact.element(undefined, undefined, VerticalSpacer$ReactTemplate.make("25", /* array */[])), React.createElement("div", {
                               id: "todo-list"
                             }, match ? "Nothing yet" : $$Array.of_list(List.map((function (todo) {
-                                          return ReasonReact.element(String(inc(iter)), undefined, TodoItem$ReactTemplate.make(todo, /* array */[]));
+                                          return ReasonReact.element(String(inc(iter)), undefined, TodoItem$ReactTemplate.make(todo, state[/* showCompleted */1], /* array */[]));
                                         }), state[/* todos */2]))), React.createElement("button", {
-                              id: "hide-button"
+                              id: "hide-button",
+                              onClick: (function (param) {
+                                  return Curry._1(send, /* ToggleHidden */0);
+                                })
                             }, "Hide Completed Todos"), React.createElement("div", {
                               id: "todo-count"
                             }, "Todos left: " + String(state[/* count */0])));

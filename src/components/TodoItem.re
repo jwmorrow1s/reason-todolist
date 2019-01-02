@@ -10,7 +10,7 @@ let component = ReasonReact.reducerComponent("todoItem");
 
 let str = ReasonReact.string;
 
-let make = (~description, _children) => {
+let make = (~description, ~showCompleted, _children) => {
     ...component,
 
     initialState: () => {description, completed: false},
@@ -20,7 +20,7 @@ let make = (~description, _children) => {
             | Click => ReasonReact.Update({...state, completed: !state.completed}) 
         },
     render: ({state, send}) => {
-        /* (!TodoList.state.showCompleted && state.completed) ? str("") : */
+        (!showCompleted && state.completed) ? str("") :
         <div className="contentRow" onClick=((_) => send(Click))>
             <CheckBox color="black" checked=state.completed />
             <HorizontalSpacer size="50" />

@@ -17,6 +17,13 @@ function str(prim) {
   return prim;
 }
 
+var iter = /* record */[/* contents */0];
+
+function inc(i) {
+  i[0] = i[0] + 1 | 0;
+  return i[0];
+}
+
 function make(_children) {
   return /* record */[
           /* debugName */component[/* debugName */0],
@@ -31,11 +38,6 @@ function make(_children) {
           /* render */(function (param) {
               var send = param[/* send */3];
               var state = param[/* state */1];
-              var iter = /* record */[/* contents */0];
-              var inc = function (i) {
-                i[0] = i[0] + 1 | 0;
-                return i[0];
-              };
               var match = List.length(state[/* todos */2]) < 1;
               return React.createElement("div", {
                           id: "list_component"
@@ -47,7 +49,11 @@ function make(_children) {
                                   value: state[/* todoText */3],
                                   onKeyDown: (function (evt) {
                                       if (evt.key === "Enter") {
-                                        return Curry._1(send, /* AddTodo */Block.__(0, [state[/* todoText */3]]));
+                                        return Curry._1(send, /* AddTodo */Block.__(0, [/* record */[
+                                                        /* description */state[/* todoText */3],
+                                                        /* id */inc(iter),
+                                                        /* completed */false
+                                                      ]]));
                                       } else {
                                         return 0;
                                       }
@@ -58,7 +64,12 @@ function make(_children) {
                                 })), ReasonReact.element(undefined, undefined, VerticalSpacer$ReactTemplate.make("25", /* array */[])), React.createElement("div", {
                               id: "todo-list"
                             }, match ? "Nothing yet" : $$Array.of_list(List.map((function (todo) {
-                                          return ReasonReact.element(String(inc(iter)), undefined, TodoItem$ReactTemplate.make(todo, state[/* showCompleted */1], /* array */[]));
+                                          return React.createElement("div", {
+                                                      key: String(todo[/* id */1]),
+                                                      onClick: (function (param) {
+                                                          return Curry._1(send, /* ToggleComplete */Block.__(2, [todo[/* id */1]]));
+                                                        })
+                                                    }, ReasonReact.element(undefined, undefined, TodoItem$ReactTemplate.make(todo[/* description */0], state[/* showCompleted */1], todo[/* completed */2], /* array */[])));
                                         }), state[/* todos */2]))), React.createElement("button", {
                               id: "hide-button",
                               onClick: (function (param) {
@@ -66,7 +77,9 @@ function make(_children) {
                                 })
                             }, "Hide Completed Todos"), React.createElement("div", {
                               id: "todo-count"
-                            }, "Todos left: " + String(state[/* count */0])));
+                            }, "Todos left: " + String(List.length(List.filter((function (todo) {
+                                              return !todo[/* completed */2];
+                                            }))(state[/* todos */2])))));
             }),
           /* initialState */(function (param) {
               return /* record */[
@@ -85,25 +98,58 @@ function make(_children) {
                             /* todos */state[/* todos */2],
                             /* todoText */state[/* todoText */3]
                           ]]);
-              } else if (action.tag) {
-                return /* Update */Block.__(0, [/* record */[
-                            /* count */state[/* count */0],
-                            /* showCompleted */state[/* showCompleted */1],
-                            /* todos */state[/* todos */2],
-                            /* todoText */action[0]
-                          ]]);
               } else {
-                var todoText = action[0];
-                var match = todoText.length !== 0;
-                return /* Update */Block.__(0, [/* record */[
-                            /* count */state[/* count */0] + 1 | 0,
-                            /* showCompleted */state[/* showCompleted */1],
-                            /* todos */match ? Pervasives.$at(state[/* todos */2], /* :: */[
-                                    todoText,
-                                    /* [] */0
-                                  ]) : state[/* todos */2],
-                            /* todoText */""
-                          ]]);
+                switch (action.tag | 0) {
+                  case 0 : 
+                      var todo = action[0];
+                      var match = todo[/* description */0].length !== 0;
+                      return /* Update */Block.__(0, [/* record */[
+                                  /* count */state[/* count */0] + 1 | 0,
+                                  /* showCompleted */state[/* showCompleted */1],
+                                  /* todos */match ? Pervasives.$at(state[/* todos */2], /* :: */[
+                                          todo,
+                                          /* [] */0
+                                        ]) : state[/* todos */2],
+                                  /* todoText */""
+                                ]]);
+                  case 1 : 
+                      return /* Update */Block.__(0, [/* record */[
+                                  /* count */state[/* count */0],
+                                  /* showCompleted */state[/* showCompleted */1],
+                                  /* todos */state[/* todos */2],
+                                  /* todoText */action[0]
+                                ]]);
+                  case 2 : 
+                      var id = action[0];
+                      var theTodo = List.find((function (todo) {
+                              return todo[/* id */1] === id;
+                            }), state[/* todos */2]);
+                      var updatedTodo_000 = /* description */theTodo[/* description */0];
+                      var updatedTodo_001 = /* id */theTodo[/* id */1];
+                      var updatedTodo_002 = /* completed */!theTodo[/* completed */2];
+                      var updatedTodo = /* record */[
+                        updatedTodo_000,
+                        updatedTodo_001,
+                        updatedTodo_002
+                      ];
+                      var todosWithoutMatch = List.filter((function (todo) {
+                                return todo[/* id */1] !== id;
+                              }))(state[/* todos */2]);
+                      var updatedList = Pervasives.$at(/* :: */[
+                            updatedTodo,
+                            /* [] */0
+                          ], todosWithoutMatch);
+                      var sortedList = List.sort((function (first, second) {
+                              return first[/* id */1] - second[/* id */1] | 0;
+                            }), updatedList);
+                      return /* Update */Block.__(0, [/* record */[
+                                  /* count */state[/* count */0],
+                                  /* showCompleted */state[/* showCompleted */1],
+                                  /* todos */sortedList,
+                                  /* todoText */state[/* todoText */3]
+                                ]]);
+                  
+                }
               }
             }),
           /* jsElementWrapped */component[/* jsElementWrapped */13]
@@ -112,5 +158,7 @@ function make(_children) {
 
 exports.component = component;
 exports.str = str;
+exports.iter = iter;
+exports.inc = inc;
 exports.make = make;
 /* component Not a pure module */

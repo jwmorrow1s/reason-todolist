@@ -1,18 +1,31 @@
+type todo = {
+    description: string,
+    id: int,
+    completed: bool
+};
+
 type state = {
     count: int,
     showCompleted: bool,
-    todos: list(string),
+    todos: list(todo),
     todoText: string
 };
 
 type action = 
   | ToggleHidden
-  | AddTodo(string)
-  | UpdateText(string);
+  | AddTodo(todo)
+  | UpdateText(string)
+  | ToggleComplete(int);
   
 let component = ReasonReact.reducerComponent("todoList");
 
 let str = ReasonReact.string;
+
+let iter = ref(0);
+let inc = (i) => {
+    i := i^ + 1;
+    i^;
+};
 
 let make = (_children) => {
     ...component,
@@ -22,22 +35,25 @@ let make = (_children) => {
     reducer: (action, state) => 
         switch(action){
             | ToggleHidden => ReasonReact.Update({...state, showCompleted: !state.showCompleted})
-            | AddTodo(todoText) => {
+            | AddTodo(todo) => {
                 ReasonReact.Update({...state, count: state.count + 1,
-                     todos: String.length(todoText) > 0 ? state.todos @ [todoText] : state.todos,
+                     todos: String.length(todo.description) > 0 ? state.todos @ [todo] : state.todos,
                       todoText: ""});
             }
             | UpdateText(text) => {
                 ReasonReact.Update({...state, todoText: text});
-            };
+            }
+            | ToggleComplete(id) => ReasonReact.Update((id => {
+                let theTodo = List.find(todo => todo.id == id, state.todos);
+                let updatedTodo = {...theTodo, completed: !theTodo.completed};
+                let todosWithoutMatch = List.filter(todo => todo.id != id, state.todos);
+                let updatedList = [updatedTodo] @ todosWithoutMatch;
+                let sortedList = List.sort((first, second) => first.id - second.id, updatedList);
+                {...state, todos: sortedList};
+            })(id));
         },
     
     render: ({state, send}) => {
-        let iter = ref(0);
-        let inc = (i) => {
-            i := i^ + 1;
-            i^;
-        };
         {
             <div id="list_component">
                 <VerticalSpacer size="50" />
@@ -50,7 +66,7 @@ let make = (_children) => {
                     onChange=((evt) => send(UpdateText(ReactEvent.Form.target(evt)##value)))
                     onKeyDown=((evt) => 
                         if(ReactEvent.Keyboard.key(evt) == "Enter"){
-                            send(AddTodo(state.todoText));
+                            send(AddTodo({description: state.todoText, completed: false, id: inc(iter)}));
                         })
                     />
                 </div>/*</content-row>*/
@@ -59,8 +75,10 @@ let make = (_children) => {
                 (   List.length(state.todos) < 1 ? str("Nothing yet") :
                     ReasonReact.array(Array.of_list(
                         List.map(todo => 
-                            <TodoItem key={string_of_int(inc(iter))} description={todo} showCompleted=state.showCompleted/>,
-                                 state.todos)
+                            <div key={string_of_int(todo.id)} onClick=(_ => send(ToggleComplete(todo.id)))>
+                                <TodoItem description={todo.description} showCompleted=state.showCompleted completed={todo.completed}/>
+                                     
+                            </div>, state.todos)
                     ))
                 )
                 </div>/*</todo-list>*/
@@ -68,7 +86,7 @@ let make = (_children) => {
                     id="hide-button"
                     onClick=(_ => send(ToggleHidden))
                     >{str("Hide Completed Todos")}</button>
-                <div id="todo-count">{str("Todos left: " ++ string_of_int(state.count))}</div>
+                <div id="todo-count">{str("Todos left: " ++ string_of_int(List.length(List.filter(todo => !todo.completed, state.todos))))}</div>
             </div>/*</list-component>*/
         }
     }

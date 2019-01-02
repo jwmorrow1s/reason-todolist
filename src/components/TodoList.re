@@ -5,11 +5,6 @@ type state = {
     todoText: string
 };
 
-type todo_t = {
-    description: string,
-    completed: bool
-};
-
 type action = 
   | ToggleHidden
   | AddTodo(string)

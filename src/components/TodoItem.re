@@ -1,16 +1,18 @@
+open TodoTypes;
+
 let component = ReasonReact.statelessComponent("todoItem");
 
 let str = ReasonReact.string;
 
-let make = (~description, ~showCompleted, ~completed, _children) => {
+let make = (~todo, ~showCompleted, _children) => {
     ...component,
 
     render: _ => {
-        (!showCompleted && completed) ? str("") :
+        (!showCompleted && todo.completed) ? str("") :
         <div className="contentRow">
-            <CheckBox color="black" checked=completed />
+            <CheckBox color="black" checked=todo.completed />
             <HorizontalSpacer size="50" />
-            <div className="todoItem">{str(description)}</div>
+            <div className="todoItem">{str(todo.description)}</div>
         </div> /*</contentRow>*/
     }
 };

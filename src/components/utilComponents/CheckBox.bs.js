@@ -20,9 +20,9 @@ function checkbox(color, checked) {
                 fontFamily: "sans-serif",
                 fontSize: "2vh",
                 height: "2vh",
-                marginTop: "3px",
+                marginTop: "7px",
                 textAlign: "center",
-                width: "2vw"
+                width: "1.3vw"
               }
             }, checked ? "X" : "");
 }

@@ -1,36 +1,13 @@
-type todo = {
-    description: string,
-    id: int,
-    completed: bool
-};
-
-type state = {
-    count: int,
-    showCompleted: bool,
-    todos: list(todo),
-    todoText: string
-};
-
-type action = 
-  | ToggleHidden
-  | AddTodo(todo)
-  | UpdateText(string)
-  | ToggleComplete(int);
+open TodoTypes;
   
 let component = ReasonReact.reducerComponent("todoList");
 
 let str = ReasonReact.string;
 
-let iter = ref(0);
-let inc = (i) => {
-    i := i^ + 1;
-    i^;
-};
-
 let make = (_children) => {
     ...component,
 
-    initialState: () => {count: 0, showCompleted: true, todoText: "", todos: []},
+    initialState: () => initialState,
 
     reducer: (action, state) => 
         switch(action){
@@ -57,29 +34,11 @@ let make = (_children) => {
         {
             <div id="list_component">
                 <VerticalSpacer size="50" />
-                <div className="contentRow">
-                {str("New Todo:")}
-                <input 
-                    id="todo-input"
-                    value=state.todoText
-                    placeholder="Write something to do..."
-                    onChange=((evt) => send(UpdateText(ReactEvent.Form.target(evt)##value)))
-                    onKeyDown=((evt) => 
-                        if(ReactEvent.Keyboard.key(evt) == "Enter"){
-                            send(AddTodo({description: state.todoText, completed: false, id: inc(iter)}));
-                        })
-                    />
-                </div>/*</content-row>*/
+                <TodoInput parentState=state toParent=send />
                 <VerticalSpacer size="25" />
                 <div id="todo-list">
                 (   List.length(state.todos) < 1 ? str("Nothing yet") :
-                    ReasonReact.array(Array.of_list(
-                        List.map(todo => 
-                            <div key={string_of_int(todo.id)} onClick=(_ => send(ToggleComplete(todo.id)))>
-                                <TodoItem description={todo.description} showCompleted=state.showCompleted completed={todo.completed}/>
-                                     
-                            </div>, state.todos)
-                    ))
+                    <Todos todos=state.todos toParent=send showCompleted=state.showCompleted />
                 )
                 </div>/*</todo-list>*/
                 <button 

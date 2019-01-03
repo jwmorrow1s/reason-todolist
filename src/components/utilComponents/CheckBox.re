@@ -11,11 +11,11 @@ let checkbox = (color, checked) => {
                     ~fontFamily="sans-serif",
                     ~color=color,
                     ~height="2vh",
-                    ~width="2vw",
+                    ~width="1.3vw",
                     ~border="2px solid " ++ color,
                     ~fontSize="2vh",
                     ~textAlign="center",
-                    ~marginTop="3px",
+                    ~marginTop="7px",
                     ()
                 )
             )

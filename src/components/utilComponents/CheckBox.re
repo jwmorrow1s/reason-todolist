@@ -9,13 +9,15 @@ let checkbox = (color, checked) => {
                 ReactDOMRe.Style.make(
                     ~backgroundColor="white",
                     ~fontFamily="sans-serif",
+                    ~textShadow="none",
                     ~color=color,
-                    ~height="2vh",
-                    ~width="1.3vw",
+                    ~height="25px",
+                    ~width="25px",
                     ~border="2px solid " ++ color,
-                    ~fontSize="2vh",
+                    ~fontSize="25px",
                     ~textAlign="center",
-                    ~marginTop="7px",
+                    ~marginTop="4px",
+                    ~marginLeft="4px",
                     ()
                 )
             )

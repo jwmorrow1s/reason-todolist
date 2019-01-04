@@ -29,7 +29,7 @@ function make(todo, showCompleted, _children) {
                 return "";
               } else {
                 return React.createElement("div", {
-                            className: "contentRow"
+                            className: "contentRow todoRow"
                           }, ReasonReact.element(undefined, undefined, CheckBox$ReactTemplate.make("black", todo[/* completed */1], /* array */[])), ReasonReact.element(undefined, undefined, HorizontalSpacer$ReactTemplate.make("50", /* array */[])), React.createElement("div", {
                                 className: "todoItem"
                               }, todo[/* description */0]));

@@ -15,7 +15,7 @@ let make = (~toParent, ~parentState, _) => {
 
     render: _ => {
         <div className="contentRow">
-        {str("New Todo:")}
+        <div id="todo-input-label">{str("New Todo:")}</div>
         <input 
             id="todo-input"
             value=parentState.todoText

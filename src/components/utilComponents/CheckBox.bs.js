@@ -18,11 +18,13 @@ function checkbox(color, checked) {
                 border: "2px solid " + color,
                 color: color,
                 fontFamily: "sans-serif",
-                fontSize: "2vh",
-                height: "2vh",
-                marginTop: "7px",
+                fontSize: "25px",
+                height: "25px",
+                marginTop: "4px",
+                marginLeft: "4px",
                 textAlign: "center",
-                width: "1.3vw"
+                textShadow: "none",
+                width: "25px"
               }
             }, checked ? "X" : "");
 }

@@ -34,7 +34,10 @@ input{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
+    background-color: hsla(0, 0%, 85%, 1);
+    width: 80%;
+    border: 1px solid black;
+    text-shadow: 1px 2px white;
 }
 
 #hide-button{
@@ -52,14 +55,52 @@ input{
     text-shadow: 2px 2px black;
 }
 
+#todo-input-label{
+    color: white;
+    text-shadow: 2px 2px black;
+    margin-right: 10px;
+}
+
+#todo-input{
+    font-size: 20px;
+    font-family: serif;
+    text-align: initial;
+    padding-left: 10px;
+}
+
+#todo-input:focus{
+    outline: none;
+}
+
+#hide-button{
+    background-color: hsla(0, 0%, 95%, 1);
+    text-shadow: 1px 2px white;
+    font-family: serif;
+}
+
+#hide-button:hover{
+    background-color: hsla(0, 0%, 35%, 1);
+    color: white;
+    text-shadow: 2px 2px black;
+}
+
+#hide-button:focus{
+    outline: none;
+}
+
 .contentRow{
     display:flex;
     flex-direction: row;
     text-align: left;
 }
 
-.todoItem{
-    background-color: white;
-    color: black;
+.todoRow{
+    border-bottom: 1px solid black;
+}
+
+.todoRow:hover{
+    background-color: hsla(0, 0%, 35%, 1);
+    color: white;
+    text-shadow: 2px 2px black;
 }
 

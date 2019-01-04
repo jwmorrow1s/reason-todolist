@@ -33,7 +33,9 @@ function make(toParent, parentState, param) {
           /* render */(function (param) {
               return React.createElement("div", {
                           className: "contentRow"
-                        }, "New Todo:", React.createElement("input", {
+                        }, React.createElement("div", {
+                              id: "todo-input-label"
+                            }, "New Todo:"), React.createElement("input", {
                               id: "todo-input",
                               placeholder: "Write something to do...",
                               value: parentState[/* todoText */3],

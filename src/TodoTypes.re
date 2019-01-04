@@ -16,10 +16,3 @@ type action =
   | AddTodo(todo)
   | UpdateText(string)
   | ToggleComplete(int);
-
-let initialState = {
-      count: 0,
-      showCompleted: true,
-      todoText: "",
-      todos: []
-};

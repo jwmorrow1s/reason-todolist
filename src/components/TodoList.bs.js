@@ -9,7 +9,6 @@ var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Todos$ReactTemplate = require("./Todos.bs.js");
 var TodoInput$ReactTemplate = require("./TodoInput.bs.js");
-var TodoTypes$ReactTemplate = require("../TodoTypes.bs.js");
 var VerticalSpacer$ReactTemplate = require("./utilComponents/VerticalSpacer.bs.js");
 
 var component = ReasonReact.reducerComponent("todoList");
@@ -49,10 +48,44 @@ function make(_children) {
                                             }))(state[/* todos */2])))));
             }),
           /* initialState */(function (param) {
-              return TodoTypes$ReactTemplate.initialState;
+              return /* record */[
+                      /* count */0,
+                      /* showCompleted */true,
+                      /* todos : [] */0,
+                      /* todoText */""
+                    ];
             }),
           /* retainedProps */component[/* retainedProps */11],
           /* reducer */(function (action, state) {
+              var removeTodoById = function (id) {
+                var theTodo = List.find((function (todo) {
+                        return todo[/* id */2] === id;
+                      }), state[/* todos */2]);
+                var updatedTodo_000 = /* description */theTodo[/* description */0];
+                var updatedTodo_001 = /* completed */!theTodo[/* completed */1];
+                var updatedTodo_002 = /* id */theTodo[/* id */2];
+                var updatedTodo = /* record */[
+                  updatedTodo_000,
+                  updatedTodo_001,
+                  updatedTodo_002
+                ];
+                var todosWithoutMatch = List.filter((function (todo) {
+                          return todo[/* id */2] !== id;
+                        }))(state[/* todos */2]);
+                var updatedList = Pervasives.$at(/* :: */[
+                      updatedTodo,
+                      /* [] */0
+                    ], todosWithoutMatch);
+                var sortedList = List.sort((function (first, second) {
+                        return first[/* id */2] - second[/* id */2] | 0;
+                      }), updatedList);
+                return /* record */[
+                        /* count */state[/* count */0],
+                        /* showCompleted */state[/* showCompleted */1],
+                        /* todos */sortedList,
+                        /* todoText */state[/* todoText */3]
+                      ];
+              };
               if (typeof action === "number") {
                 return /* Update */Block.__(0, [/* record */[
                             /* count */state[/* count */0],
@@ -82,34 +115,7 @@ function make(_children) {
                                   /* todoText */action[0]
                                 ]]);
                   case 2 : 
-                      var id = action[0];
-                      var theTodo = List.find((function (todo) {
-                              return todo[/* id */2] === id;
-                            }), state[/* todos */2]);
-                      var updatedTodo_000 = /* description */theTodo[/* description */0];
-                      var updatedTodo_001 = /* completed */!theTodo[/* completed */1];
-                      var updatedTodo_002 = /* id */theTodo[/* id */2];
-                      var updatedTodo = /* record */[
-                        updatedTodo_000,
-                        updatedTodo_001,
-                        updatedTodo_002
-                      ];
-                      var todosWithoutMatch = List.filter((function (todo) {
-                                return todo[/* id */2] !== id;
-                              }))(state[/* todos */2]);
-                      var updatedList = Pervasives.$at(/* :: */[
-                            updatedTodo,
-                            /* [] */0
-                          ], todosWithoutMatch);
-                      var sortedList = List.sort((function (first, second) {
-                              return first[/* id */2] - second[/* id */2] | 0;
-                            }), updatedList);
-                      return /* Update */Block.__(0, [/* record */[
-                                  /* count */state[/* count */0],
-                                  /* showCompleted */state[/* showCompleted */1],
-                                  /* todos */sortedList,
-                                  /* todoText */state[/* todoText */3]
-                                ]]);
+                      return /* Update */Block.__(0, [removeTodoById(action[0])]);
                   
                 }
               }

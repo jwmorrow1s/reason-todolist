@@ -2,7 +2,7 @@ open TodoTypes;
 
 let component = ReasonReact.statelessComponent("todos");
 
-let make = (~todos: list(todo), ~toParent, ~showCompleted,  _) => {
+let make = (~todos: list(todo), ~toParent, ~showCompleted, _) => { 
     ...component,
     render:  (_) => {
         ReasonReact.array(Array.of_list(
@@ -12,4 +12,5 @@ let make = (~todos: list(todo), ~toParent, ~showCompleted,  _) => {
                             </div>, todos)
                     ))
     }
+    
 };
